@@ -34,9 +34,14 @@ export const skladSlice = createSlice({
         console.log("j");
       }
     },
-    logout:(state) =>{
-      state.isAuth = false
+    logout: (state) => {
+      state.isAuth = false;
     },
+
+    addNewUser: (state, action) => {
+      state.users.push({login: action.payload.login, password:action.payload.password})
+    },
+
     changeSklad: (state, action) => {
       const changedItem = state.scladItems.filter(
         (item) => item.type === action.payload[0]
@@ -45,9 +50,11 @@ export const skladSlice = createSlice({
         el.count -= action.payload[1];
       });
     },
+
     addMoney: (state, action) => {
       state.myMoney += action.payload;
     },
+
     addFinishProduct: (state, action) => {
       console.log(action.payload);
       if (state.finishProducts.find((el) => el.name === action.payload[0])) {
