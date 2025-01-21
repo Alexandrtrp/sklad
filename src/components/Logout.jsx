@@ -1,7 +1,7 @@
 
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { logout } from "../store/skladSlice";
+import { logout } from "../store/authSlice";
 
 export const Logout = () => {
   const dispatch = useDispatch();
@@ -9,7 +9,7 @@ export const Logout = () => {
   const navigate = useNavigate();
 
   return (
-    <button
+    <button className="logoutButton"
       onClick={() => {
         navigate("/", { replace: false });
         dispatch(logout());

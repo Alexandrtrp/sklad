@@ -1,42 +1,37 @@
 import "./App.css";
 import React from "react";
-import { Kisti003 } from "./components/products/Kisti003";
 import { Route, Routes } from "react-router-dom";
-import { Bit004 } from "./components/products/Bit004";
-import { Nozh } from "./components/products/Nozh";
-import { SalfetkaStirka } from "./components/products/SalfetkaStirka";
 import { Main } from "./Main";
-import { SideBar } from "./components/SideBar";
+import { SideBar } from "./components/SideBar/SideBar";
 import { Sklad } from "./components/Sklad";
 import { Auth } from "./components/Authorization/Authorization";
+import { Registration } from "./components/Registration/Registration";
+import { useSelector } from "react-redux";
+import { CalculateProduct } from "./components/CalculateProduct";
 
 function App() {
-  // Рабочие маршруты!
-  // return (
-  //   <div className="app">
-  //     <SideBar />
-  //     <div>
-  //       <Routes>
-  //         <Route path="kisti003" element={<Kisti003 />} />
-  //         <Route path="bit004" element={<Bit004 />} />
-  //         <Route path="nozh" element={<Nozh />} />
-  //         <Route path="salfetka-stirka" element={<SalfetkaStirka />} />
-  //       </Routes>
-  //     </div>
-  //     <Sklad />
-  //   </div>
-  // );
+  const products = useSelector((state) => state.sklad.products);
 
   return (
     <div>
       <Routes>
         <Route path="/" element={<Auth />} />
+        <Route path="/registration" element={<Registration />} />
         <Route path="main" element={<Main />}>
           <Route path="sidebar" element={<SideBar />} />
-          <Route path="kisti003" element={<Kisti003 />} />
-          <Route path="bit004" element={<Bit004 />} />
-          <Route path="nozh" element={<Nozh />} />
-          <Route path="salfetka-stirka" element={<SalfetkaStirka />} />
+          {products.map((product) => (
+            <Route
+              path={product.path}
+              element={
+                <CalculateProduct
+                  price={product.price}
+                  id={product.id}
+                  mnozh={product.mnozh}
+                  name={product.name}
+                />
+              }
+            />
+          ))}
           <Route path="sklad" element={<Sklad />} />
         </Route>
       </Routes>

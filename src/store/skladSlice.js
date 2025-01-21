@@ -1,47 +1,42 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
+  products: [
+    { path: "bit004", price: 4, id: 2, mnozh: 4, name: "Bit-004" },
+    { path: "kisti003", price: 8, id: 1, mnozh: 1, name: "Kisti-003" },
+    { path: "nozh", price: 7, id: 3, mnozh: 1, name: "Нож" },
+    {
+      path: "salfetka-stirka",
+      price: 15,
+      id: 4,
+      mnozh: 1,
+      name: "Салфетки для стирки",
+    },
+  ],
   scladItems: [
-    { name: "kisti", type: 1, count: 1000 },
-    { name: "schetka", type: 1, count: 1000 },
-    { name: "sponzh", type: 1, count: 1000 },
-    { name: "bit1", type: 2, count: 1000 },
-    { name: "nozh", type: 3, count: 1000 },
-    { name: "salfetka-stirka", type: 4, count: 1000 },
-    { name: "bumagka-stirka", type: 4, count: 1000 },
-    { name: "test", type: 8, count: 1000 },
-    { name: "test", type: 9, count: 1000 },
-    { name: "test", type: 10, count: 1000 },
+    { name: "kisti", type: 1, count: 1000, id: "1" },
+    { name: "schetka", type: 1, count: 1000, id: "2" },
+    { name: "sponzh", type: 1, count: 1000, id: "3" },
+    { name: "bit1", type: 2, count: 1000, id: "4" },
+    { name: "nozh", type: 3, count: 1000, id: "5" },
+    { name: "salfetka-stirka", type: 4, count: 1000, id: "6" },
+    { name: "bumagka-stirka", type: 4, count: 1000, id: "7" },
+    { name: "test1", type: 8, count: 1000, id: "8" },
+    { name: "test2", type: 9, count: 1000, id: "9" },
+    { name: "test3", type: 10, count: 1000 },
+  ],
+  skladChina: [
+    { name: "test1", type: 8, count: 10000, id: "8" },
+    { name: "test2", type: 8, count: 10000, id: "9" },
   ],
   finishProducts: [],
   myMoney: 0,
-  users: [{ login: "rrr", password: "123" }],
-  isAuth: false,
 };
 
 export const skladSlice = createSlice({
   name: "sklad",
   initialState,
   reducers: {
-    isAuthCheck: (state, action) => {
-      const authUser = state.users.filter(
-        (el) =>
-          el.login === action.payload.login &&
-          el.password === action.payload.password
-      );
-      if (authUser.length === 1) {
-        state.isAuth = true;
-        console.log("j");
-      }
-    },
-    logout: (state) => {
-      state.isAuth = false;
-    },
-
-    addNewUser: (state, action) => {
-      state.users.push({login: action.payload.login, password:action.payload.password})
-    },
-
     changeSklad: (state, action) => {
       const changedItem = state.scladItems.filter(
         (item) => item.type === action.payload[0]
@@ -57,20 +52,25 @@ export const skladSlice = createSlice({
 
     addFinishProduct: (state, action) => {
       console.log(action.payload);
-      if (state.finishProducts.find((el) => el.name === action.payload[0])) {
-        state.finishProducts.find(
-          (el) => el.name === action.payload[0]
-        ).quantity += action.payload[1];
+      const changeItem = state.finishProducts.find((el) => el.name === action.payload[0])
+      if (changeItem) {
+        changeItem.quantity += action.payload[1];
       } else {
         state.finishProducts.push({
-          name: action.payload[0],
-          quantity: action.payload[1],
+          name: action.payload.name,
+          quantity: action.payload.quantity,
         });
       }
     },
+
+    movingItem: (state, action) =>{
+      const changedItem = state.scladItems.find(item=>item.id===action.payload.id)
+      const changedChinaItem = state.changeItem.find(item=>item.id===action.payload.id)
+      changedItem.count +=action.payload.count
+      changedChinaItem.count -=action.payload.count
+    }
   },
 });
 
-export const { changeSklad, addMoney, addFinishProduct, isAuthCheck, logout } =
-  skladSlice.actions;
+export const { changeSklad, addMoney, addFinishProduct, movingItem } = skladSlice.actions;
 export default skladSlice.reducer;

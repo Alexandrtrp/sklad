@@ -6,11 +6,12 @@ import { addFinishProduct, addMoney, changeSklad } from "../store/skladSlice";
 export const CalculateProduct = (props) => {
       const [sumOfProduct, setSumOfProduct] = useState(0);
       const [plusProduct, setPlusProduct] = useState('');
-      const [deleteKisti, setDeleteProduct] = useState('');
+      const [deleteProduct, setDeleteProduct] = useState('');
       const sumMoney = sumOfProduct * props.price
       const dispatch = useDispatch()
   return (
       <div className="productValues">
+        <h1>{props.name}</h1>
         <div className="productValuesWrapper">
           <input
             value={plusProduct}
@@ -28,14 +29,14 @@ export const CalculateProduct = (props) => {
         </div>
         <div className="productValuesWrapper">
           <input
-            value={deleteKisti}
+            value={deleteProduct}
             type="number"
             onChange={(e) => setDeleteProduct(e.target.value)}
           />
           <button
             className="button"
             onClick={() => {
-              setSumOfProduct(sumOfProduct - deleteKisti);
+              setSumOfProduct(sumOfProduct - deleteProduct);
               setDeleteProduct('')
             }}
           >
@@ -51,7 +52,7 @@ export const CalculateProduct = (props) => {
         <button onClick={()=>{
           dispatch(changeSklad([props.id, sumOfProduct*props.mnozh]))
           dispatch(addMoney(sumMoney))
-          dispatch(addFinishProduct([props.name, sumOfProduct]))
+          dispatch(addFinishProduct({name: props.name, quantity: sumOfProduct}))
           setSumOfProduct(0)
         }} className="button">Сохранить работу</button>
       </div>
