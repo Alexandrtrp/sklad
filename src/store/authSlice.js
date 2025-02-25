@@ -2,12 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   users: [
-    { login: "rrr", password: "123", name: 'user' },
-    { login: "admin", password: "cofe", name: 'admin' },
-    
+    { login: "rrr", password: "123", name: "Sasha" },
+    { login: "admin", password: "cofe", name: "Admin" },
   ],
   isAuth: false,
-  isAdmin: false
+  isAdmin: false,
+  nameAuthUser: ''
 };
 
 export const authSlice = createSlice({
@@ -15,19 +15,20 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     isAuthCheck: (state, action) => {
-      const authUser = state.users.filter(
+      const authUser = state.users.find(
         (el) =>
           el.login === action.payload.login &&
           el.password === action.payload.password
       );
-      if (authUser.length > 0) {
+      if (authUser) {
         state.isAuth = true;
+        state.nameAuthUser = authUser.name
       }
-      if(authUser.name==='admin') state.isAdmin = true
-      
+      if (authUser.name === "admin") state.isAdmin = true;
     },
     logout: (state) => {
       state.isAuth = false;
+      state.isAdmin = false;
     },
 
     addNewUser: (state, action) => {
@@ -35,7 +36,7 @@ export const authSlice = createSlice({
       state.users.push({
         login: action.payload.login,
         password: action.payload.password,
-        name: 'user'
+        name: action.payload.name,
       });
     },
   },

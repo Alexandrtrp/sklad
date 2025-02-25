@@ -8,6 +8,7 @@ import { Auth } from "./components/Authorization/Authorization";
 import { Registration } from "./components/Registration/Registration";
 import { useSelector } from "react-redux";
 import { CalculateProduct } from "./components/CalculateProduct";
+import { Profile } from "./components/Profile/Profile";
 
 function App() {
   const products = useSelector((state) => state.sklad.products);
@@ -34,6 +35,7 @@ function App() {
           ))}
           <Route path="sklad" element={<Sklad />} />
         </Route>
+        <Route path="profile" element={<Profile/>} />
       </Routes>
     </div>
   );
